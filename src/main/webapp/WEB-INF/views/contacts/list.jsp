@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ include file="../common/mainhead.jsp"%>
-
 <c:set var="contactsList" value="${dataMap.contactsList }"/>
 <c:set var="pageMaker" value="${dataMap.pageMaker }" />
 <c:set var="cri" value="${pageMaker.cri }"/>
@@ -19,34 +17,13 @@
 <!-- 폰트어썸 불러오기 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 
-<!-- 사이트 공통 CSS -->
-<link rel="stylesheet" href="/resource/common.css" />
 <!-- 사이트 공통 JS -->
 <script src="/resource/common.js" defer="defer"></script>
 
 </head>
+<%@ include file="../common/mainhead.jsp"%>
 <style>
-.btn-ghost:hover{
-   background-color:#016FA0;
-}
-a:hover{
-   background-color:#016FA0;
-   color:white;
-}
-.btn-top{
-   background-color:white;
-   border:none;
-}
-.btn-top:hover{
-   background-color:#AAAAAA;
-   border:#AAAAAA;
-}
-.navbar{
-   padding:0px;
-   min-height:1rem;
-   height:55px;
-}
-.main-box {
+.conmain-box {
 	width:100%;
 	height:945px;
 }
@@ -107,8 +84,7 @@ a:hover{
 }
 </style>
 
-<body>
-  <div class="main-box">
+  <div class="conmain-box">
   <div class="contacts_select">
   <div class="contacts_select2">
     <div class="con-se1">
@@ -169,7 +145,7 @@ a:hover{
 </div>
 
 <br/>
- <%@ include file="/WEB-INF/views/module/pagination.jsp" %>
+ <%@ include file="/WEB-INF/views/module/conpagination.jsp" %>
 </div>
 
 	<script>
@@ -204,5 +180,3 @@ a:hover{
 	}
 	
  </script>
-		</body>
-		</html>

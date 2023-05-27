@@ -5,14 +5,23 @@
 <mapper namespace="com.ducks.demys.boot.repository.Budget_DetailRepository">
 	<select id="getBuddtListByBUD_NUM" resultType="Budget_Detail">
 		SELECT *
-		FROM BUDGET_DETAIL
-		WHERE BUD_NUM=#{BUD_NUM}
+		FROM BUDGET_DETAIL BD
+		INNER JOIN PROJECTS P ON P.PJ_NUM = BD.PJ_NUM
+		WHERE BD.PJ_NUM = #{PJ_NUM}
+		ORDER BY BUDDT_NUM DESC
+	</select>
+	<select id="getBuddtListByBUD_NUMCount" resultType="int">
+		SELECT COUNT(*)
+		FROM BUDGET_DETAIL BD
+		INNER JOIN PROJECTS P ON P.PJ_NUM = BD.PJ_NUM
+		WHERE BD.PJ_NUM = #{PJ_NUM}
 		ORDER BY BUDDT_NUM DESC
 	</select>
 	<select id="getBuddtByBUDDT_NUM" resultType="Budget_Detail">
 		SELECT *
-		FROM BUDGET_DETAIL
-		WHERE BUDDT_NUM=#{BUDDT_NUM}
+		FROM BUDGET_DETAIL BD
+		INNER JOIN PROJECTS P ON P.PJ_NUM = BD.PJ_NUM
+		WHERE BD.PJ_NUM = #{PJ_NUM}
 	</select>
 	<select id="selectBuddtSequenceNextValue" resultType="int">
 		SELECT

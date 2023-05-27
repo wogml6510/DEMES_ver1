@@ -10,6 +10,8 @@ import com.ducks.demys.boot.vo.Issue;
 public interface IssueRepository {
 
 	public List<Issue> getIssueList();
+	
+	public List<Issue> getIssueListForDashboard();
 
 	public List<Issue> getIssueListByPJ_NUM(int PJ_NUM);
 	
@@ -24,5 +26,7 @@ public interface IssueRepository {
 	public void modifyIssue(Issue issue);
 	
 	public void removeIssue(int ISSUE_NUM);
+
+	public int getIssuePjListCount(int Pj_NUM);
 	
 }

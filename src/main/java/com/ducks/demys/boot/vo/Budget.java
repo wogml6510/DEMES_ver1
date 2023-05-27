@@ -16,5 +16,7 @@ public class Budget {
 	private Date BUD_UPDATEDATE;
 	private int PJ_NUM;
 	private int MEMBER_NUM;
+	private int BUD_PRICE;
+	private String PJ_NAME; 
 
 }

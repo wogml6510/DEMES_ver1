@@ -4,10 +4,10 @@
 
 <mapper namespace="com.ducks.demys.boot.repository.IssueReplyRepository">
 	<select id="getIssueReplyListByISSUE_NUM" resultType="IssueReply">
-		SELECT *
-		FROM ISSUEREPLY
-		WHERE ISSUE_NUM=#{ISSUE_NUM}
-		ORDER BY ISSUERE_NUM DESC
+		SELECT i.*, m.MEMBER_NAME
+		FROM ISSUEREPLY i, MEMBER m
+		WHERE ISSUERE_NUM=#{ISSUE_NUM}
+        and m.member_num = i.member_num
 	</select>
 	<select id="getIssueByISSUERE_NUM" resultType="IssueReply">
 		SELECT *

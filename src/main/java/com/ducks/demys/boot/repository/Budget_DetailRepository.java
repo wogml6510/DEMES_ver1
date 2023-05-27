@@ -10,6 +10,7 @@ import com.ducks.demys.boot.vo.Budget_Detail;
 public interface Budget_DetailRepository {
 
 	public List<Budget_Detail> getBuddtListByBUD_NUM(int BUD_NUM);
+	public int getBuddtListByBUD_NUMCount(int BUD_NUM);
 	
 	public Budget_Detail getBuddtByBUDDT_NUM(int BUDDT_NUM);
 	
@@ -20,4 +21,5 @@ public interface Budget_DetailRepository {
 	public void modifyBUDDT(Budget_Detail buddt);
 	
 	public void removeBUDDT(int BUDDT_NUM);
+
 }

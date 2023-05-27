@@ -10,10 +10,11 @@
 		WHERE BUD_NUM=#{BUD_NUM}
 	</select>
 	<select id="getBudgetByPJ_NUM" resultType="Budget">
-		SELECT *
-		FROM BUDGET
-		WHERE PJ_NUM=#{PJ_NUM}
-	</select>
+      SELECT *
+      FROM BUDGET B
+      INNER JOIN PROJECTS P ON P.PJ_NUM = B.PJ_NUM
+      WHERE B.PJ_NUM = ${PJ_NUM}
+   </select>
 	<select id="selectBudgetSequenceNextValue" resultType="int">
 		SELECT
 		BUDGET_seq.nextVal

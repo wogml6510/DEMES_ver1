@@ -19,15 +19,14 @@
 <!-- 폰트어썸 불러오기 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 
-<!-- 사이트 공통 CSS -->
-<link rel="stylesheet" href="/resource/common.css" />
 <!-- 사이트 공통 JS -->
 <script src="/resource/common.js" defer="defer"></script>
 
 </head>
 <style>
-.btn-ghost:hover {
+.btn-ghost.active {
    background-color: #016FA0;
+   
 }
 
 .alramBoard:hover {
@@ -53,13 +52,15 @@ a:hover{
    background-color:#016FA0;
    color:white;
 }
+
 </style>
 <body>
       <div class="navbar text-neutral-content bg-white">
-            <a href="#">
+            <a href="/main">
                   <img style="width: 160px; height: 55px;" src="/resource/img/logo.jpg" alt="" />
             </a>
             <div class="flex-1"></div>
+            <c:if test="${not empty member.MEMBER_ID}">
             <div class="flex-none">
                   <div class="dropdown dropdown-end">
                         <button tabindex="0" class="btn btn-top btn-circle">
@@ -138,7 +139,7 @@ a:hover{
                               
                         </ul>
                   </div>
-                <c:if test="${not empty member.MEMBER_ID}">
+                
 				  <li style="margin: 0 auto;color:black;list-style-type: none;">
 				    <span>
 				      ${member.MEMBER_NAME}
@@ -155,17 +156,6 @@ a:hover{
 				      </c:choose>
 				    </span>
 				  </li>
-				</c:if>
-				
-				<c:if test="${empty member.MEMBER_ID}">
-				  <li>
-				    <a href="/member/login" class="text-black text-right ml-2 mr-1">
-				      <span>로그인</span>
-				    </a>
-				  </li>
-				</c:if>
-
-
                   <div class="dropdown dropdown-end">
                         <label tabindex="0" class="btn btn-top btn-circle avatar">
                               <div class="w-10 rounded-full">
@@ -175,41 +165,44 @@ a:hover{
                         <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                               style="color: black;">
                               <li>
-                                    <a href="#" class="justify-between"> MyPage </a>
+                                    <a href="/mypage/myPage" class="justify-between"> MyPage </a>
                               </li>
                               <li>
 								    <a href="/member/logout" > Logout </a>
 							  </li>
                         </ul>
                   </div>
+				</c:if>
+		
+				
             </div>
       </div>
       <div class="flex" style="background-color: #153A66;">
             <div class="navbar text-neutral-content" style="width: 100%;">
                   <ul class="text-white" style="margin-left: auto;">
                         <li>
-                              <a href="#" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
+                              <a href="/main" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
                                     <span>DashBoard</span>
                               </a>
                         </li>
                         <li>
-                              <a href="#" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
+                              <a href="/project/main" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
                                     <span>Projects</span>
                               </a>
                         </li>
                         <li>
-                              <a href="#" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
+                              <a href="/calendar/calendar" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
                                     <span>Calendar</span>
                               </a>
                         </li>
                         <li>
-                              <a href="#" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
+                              <a href="/tasks/list" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
                                     <span>Tasks</span>
                               </a>
                         </li>
 
                         <li>
-                              <a href="#" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
+                              <a href="/contacts/list" class="btn btn-ghost normal-case text-xl" style="width: 130px;">
                                     <span>Contacts</span>
                               </a>
                         </li>
@@ -235,5 +228,6 @@ function MemberPictureThumb(contextPath){
 	      target.style.backgroundSize="cover";
 	   }
 	}
-</script> 
+
+</script>
       

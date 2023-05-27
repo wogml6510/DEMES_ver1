@@ -36,7 +36,6 @@ public class MemberController {
 		this.memberService = memberService;
 	}
 
-	// 로그인
 	@RequestMapping("/member/login")
 	public void showLogin() {
 	}
@@ -54,7 +53,7 @@ public class MemberController {
 
 		if (member != null && member.getMEMBER_PW().equals(MEMBER_PW)) {
 			session.setAttribute("member", member);
-			return "redirect:/contacts/list";
+			return "redirect:/main";
 		} else {
 			if (member == null || !member.getMEMBER_ID().equals(MEMBER_ID)) {
 				model.addAttribute("invalidId", "Invalid login ID.");
@@ -65,14 +64,12 @@ public class MemberController {
 		}
 	}
 
-	// 로그아웃
 	@RequestMapping("/member/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("MEMBER_ID");
+		session.removeAttribute("member");
 		return "redirect:/member/login";
 	}
 
-	// 계정등록시 인사코드 확인
 	@GetMapping("/member/registCode")
 	public String showRegistCode() {
 		return "member/registCode";
@@ -89,13 +86,11 @@ public class MemberController {
 		return "redirect:/member/regist";
 	}
 
-	// 계정등록
 	@RequestMapping("/member/regist")
 	public String showRegist() {
 		return "member/regist";
 	}
 
-	// 계정 등록 처리
 	@RequestMapping(value="/member/registMember", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String registMember(@RequestParam("MEMBER_POSITION") int MEMBER_POSITION,
@@ -119,7 +114,6 @@ public class MemberController {
 	public String pictureUpload(@RequestParam("pictureFile") MultipartFile multi, String oldPicture) throws Exception {
 		String result = "";
 
-		/* 파일 저장 확인 */
 		result = savePicture(oldPicture, multi);
 
 		return result;
@@ -128,19 +122,15 @@ public class MemberController {
 	public String savePicture(String oldPicture, MultipartFile multi) throws Exception {
 		String fileName = "";
 
-		/* 파일 저장 폴더 설정 */
 		String uploadPath = this.picturePath;
 
-		/* 파일 유무 확인 */
 		if (!(multi == null || multi.isEmpty() || multi.getSize() > 1024 * 1024 * 1)) {
 			fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
 			File storeFile = new File(uploadPath, fileName);
 
-			// local HDD에 저장
 			multi.transferTo(storeFile);
 		}
 
-		// 기존 파일 삭제
 		if (oldPicture != null && !oldPicture.isEmpty()) {
 			File oldFile = new File(uploadPath, oldPicture);
 			if (oldFile.exists()) {
@@ -177,7 +167,6 @@ public class MemberController {
 		}
 	}
 
-	// 비밀번호 찾기(아이디,메일)
 	@RequestMapping("/member/findPw")
 	public void findPwGET() {
 	}
@@ -196,7 +185,6 @@ public class MemberController {
 		}
 	}
 
-	// 인증번호 확인
 	@RequestMapping("/member/sendCode")
 	public String sendCode(Model model, @RequestParam("MEMBER_ID") String MEMBER_ID,
 			@RequestParam("VERTIFICATION_CODE") String VERTIFICATION_CODE) {
@@ -216,7 +204,6 @@ public class MemberController {
 		}
 	}
 
-	// 새 비밀번호 설정
 	@RequestMapping("/member/newPw")
 	public void newPw(@RequestParam("VERTIFICATION_CODE") String VERTIFICATION_CODE, Model model) {
 		model.addAttribute("VERTIFICATION_CODE", VERTIFICATION_CODE);
@@ -247,8 +234,7 @@ public class MemberController {
 
 		return null;
 	}
-
-	// 비밀번호 제한
+	
 	private boolean verifyNewPassword(String newPassword) {
 		if (newPassword.length() < 8) {
 			return false;
@@ -274,5 +260,74 @@ public class MemberController {
 
 		return false;
 	}
+	
+	@RequestMapping("/mypage/myPage")
+	public String showMyPage(Model model, HttpSession session) {
+
+		Member member = (Member) session.getAttribute("member");
+		String MEMBER_ID = member.getMEMBER_ID();
+		if (MEMBER_ID == null) {
+			return "redirect:/member/login";
+		}
+		memberService.getMemberByMEMBER_ID(MEMBER_ID);
+		model.addAttribute("member", member);
+
+		return "mypage/myPage";
+	}
+
+	@RequestMapping("/mypage/CheckPassword")
+	public String CheckPassword() {
+
+		return "mypage/myPage";
+	}
+
+
+	   @RequestMapping("/mypage/doCheckPassword")
+	   public String doCheckPassword(HttpSession session, String loginPwInput, Model model, String MEMBER_ID) {
+
+	       Member member = (Member) session.getAttribute("member");
+	       String MEMBER_PW = member.getMEMBER_PW();
+
+	       if (member != null && MEMBER_PW.equals(loginPwInput)) {
+	           // 비밀번호 일치
+	           model.addAttribute("member", member);
+	           return "redirect:/mypage/modify";
+	       } else {
+	           // 비밀번호 일치하지 않는 경우
+	           model.addAttribute("message", "비밀번호가 일치하지 않습니다.");
+	           model.addAttribute("alertScript", "alert('비밀번호가 일치하지 않습니다.');");
+	           return "mypage/myPage";
+	       }
+	   }
+	   
+
+	   @GetMapping("/mypage/modify")
+	   public String modify(HttpSession session, Model model) {
+	      
+	      Member member = (Member) session.getAttribute("member");
+	      String MEMBER_ID = member.getMEMBER_ID();
+
+	      memberService.getMemberByMEMBER_ID(MEMBER_ID);
+
+//	      String picture = MakeFileName.parseFileNameFromUUID(member.getMEMBER_PIC(), "\\$\\$");
+//	      member.setMEMBER_PIC(picture);
+	      model.addAttribute("member", member);
+	         
+	      return "mypage/modify";
+	   }
+	   
+	   @PostMapping("/mypage/doModify")
+	   public String doModify(HttpSession session, Member member, String MEMBER_PIC, int MEMBER_NUM, String MEMBER_ID, String MEMBER_PW,
+	           String MEMBER_PHONE, String MEMBER_EMAIL, Model model) {
+
+	       memberService.modifyMember(member);
+	       Member updatedMember = memberService.getMemberByMEMBER_ID(MEMBER_ID);
+	       model.addAttribute("member", updatedMember);
+
+	       model.addAttribute("hideModifyButton", true);
+
+	       return "mypage/myPage";
+	   }
 
 }
+
